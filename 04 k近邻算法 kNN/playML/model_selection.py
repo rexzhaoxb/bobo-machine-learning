@@ -15,8 +15,6 @@ def train_test_split(X, y, test_ratio=0.2, seed=None):
     # 把索引进行随机打乱排列
     shuffled_indexes = np.random.permutation(len(X))
 
-    # 设置抽取测试数据集的比例
-    test_ratio = 0.2
     test_size = int(len(X) * test_ratio)
 
     # 分别抽取训练数据集和测试数据集
