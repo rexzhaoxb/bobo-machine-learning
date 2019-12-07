@@ -1,6 +1,7 @@
 import numpy as np
 from math import sqrt
 from collections import Counter
+from .metrics import accuracy_score
 
 class kNNClassifier:
     def __init__(self, k):
@@ -43,3 +44,12 @@ class kNNClassifier:
         # 最后输出预测结果
         predict_y = result[0][0]
         return predict_y
+
+    def score(self, X_test, y_test):
+        """ 如果只关心模型的准确度，不关心预测的结果，就可以调用这个函数 """
+        y_predict = self.predict(X_test)
+        return accuracy_score(y_test, y_predict)
+
+
+    def __repr__(self):
+        return "kNN(k=%d)" % self.k
