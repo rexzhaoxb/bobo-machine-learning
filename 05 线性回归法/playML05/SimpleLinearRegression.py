@@ -25,7 +25,7 @@ class SimpleLinearRegression1:
         self.a_ = num / d
         self.b_ = y_mean - self.a_ * x_mean
 
-        return self;
+        return self
 
     def predict(self, x_predict):
         assert x_predict.ndim == 1, "目前只支持一维数据处理"
