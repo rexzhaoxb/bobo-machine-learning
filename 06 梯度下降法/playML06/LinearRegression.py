@@ -83,6 +83,7 @@ class LinearRegression:
                 return t0 / (t1 + t)
 
             theta = init_theta
+            np.random.seed(666)
             for cur_iter in range(n_iters):
                 indexes = np.random.permutation(len(X_b))
                 X_b_new = X_b[indexes]
