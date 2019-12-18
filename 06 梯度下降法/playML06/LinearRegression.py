@@ -69,6 +69,39 @@ class LinearRegression:
         self.coefficients_ = self._theta[1:]
         return self
 
+    # 改进后的随机梯度，这里的参数 n_iters 是指循环遍历所有样本的次数，所有循环一遍是1
+    def fit_sgd(self, X_train, y_train, n_iters=3, t0=5, t1=50):
+        assert X_train.shape[0] == y_train.shape[0], "the size of X_train must be equal to y_train"
+        assert n_iters > 0
+
+        def dJ_sgd(theta, X_b_i, y_i):
+            return X_b_i.T.dot(X_b_i.dot(theta) - y_i)
+
+        def sgd(X_b, y, init_theta, n_iters):
+
+            def learning_rate(t):
+                return t0 / (t1 + t)
+
+            theta = init_theta
+            for cur_iter in range(n_iters):
+                indexes = np.random.permutation(len(X_b))
+                X_b_new = X_b[indexes]
+                y_new = y[indexes]
+                for i in range(len(X_b)):
+                    gradient = dJ_sgd(theta, X_b_new[i], y_new[i])
+                    theta = theta - learning_rate(cur_iter * len(X_b) + i) * gradient
+
+            print('total steps:', n_iters + len(X_b))
+            return theta
+
+        X_b = np.hstack([np.ones((len(X_train), 1)), X_train])
+        init_theta = np.zeros(X_b.shape[1])
+        self._theta = sgd(X_b, y_train, init_theta, n_iters)
+
+        self.interception_ = self._theta[0]
+        self.coefficients_ = self._theta[1:]
+        return self
+
     def predict(self, X_predict):
         assert self.coefficients_ is not None, "must fit before predict"
         assert X_predict.shape[1] == len(self.coefficients_), "feature numbers of X_predict must be equal to X_train"
